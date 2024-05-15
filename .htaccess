@@ -16,6 +16,12 @@
     Allow from all
 </Files>
 
+# Allow access to files in the uploads directory
+<Directory "uploads">
+    Order Allow,Deny
+    Allow from all
+</Directory>
+
 # Deny directory browsing
 Options -Indexes
 
