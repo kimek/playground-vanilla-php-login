@@ -57,15 +57,15 @@ A simple login system built with vanilla PHP, supporting user registration, logi
 ## Folder Structure
 
 - `index.php` - Main entry point for the application.
-- `action.php` - Vanilla api script.
-- `db_connection.php` - DB handling script.
-- `userSystem.php` - Login and registration handling script.
-- `config.php` - Configuration file for database.
+- `api.php` - Vanilla api script.
+- `config/config.php` - Configuration file for database.
 - `assets/` - Contains stylesheets and JavaScript files.
 - `migration/migration.sql` - Contains the SQL schema for setting up the database.
-- `includes/file_handling.php` - File upload handling script.
-- `includes/json_helper.php` - Json helper for api.
-- `view/` - Basic page content.
+- `src/controllers/userSystem.php` - Login and registration handling script.
+- `src/inc/file_handling.php` - File upload handling script.
+- `src/inc/json_helper.php` - Json helper for api.
+- `src/inc/db_connection.php` - DB handling script.
+- `src/view/` - Basic page content.
 - `uploads/` - File upload folder.
 
 ## Contributing

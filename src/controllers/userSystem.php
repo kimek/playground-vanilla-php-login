@@ -1,6 +1,6 @@
 <?php
-require_once 'includes/file_handling.php';
-require_once 'includes/json_helper.php';
+require_once  __DIR__ . '/../inc/file_handling.php';
+require_once  __DIR__ . '/../inc/json_helper.php';
 class UserSystem
 {
 	use fileHandler;

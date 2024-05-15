@@ -11,7 +11,7 @@
 </Files>
 
 # Allow access to action.php
-<Files action.php>
+<Files api.php>
     Order Allow,Deny
     Allow from all
 </Files>

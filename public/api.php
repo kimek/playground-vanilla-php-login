@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'includes/json_helper.php';
+require_once  __DIR__ . '/../src/inc/json_helper.php';
 
 if(empty($_POST)) {
 	json_response(null,500);
@@ -13,12 +13,12 @@ if ($_POST['action'] === 'logout') {
 }
 
 if (!isset($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
-	json_response('Refresh page and try again',500);
+	json_response('Your token has been expired. Please refresh page and try again',500);
 	die('CSRF token validation failed');
 }
 
-require_once 'db_connection.php';
-require_once 'userSystem.php';
+require_once  __DIR__ . '/../src/inc/db_connection.php';
+require_once  __DIR__ . '/../src/controllers/userSystem.php';
 
 $userSystem = new UserSystem($pdo);
 

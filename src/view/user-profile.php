@@ -1,6 +1,6 @@
 <?php
-require_once 'userSystem.php';
-require_once __DIR__ . '/../db_connection.php';
+require_once __DIR__ . '/../controllers/userSystem.php';
+require_once __DIR__ . '/../inc/db_connection.php';
 $userSystem = new UserSystem($pdo);
 $userData = $userSystem->getUserProfile();
 ?>

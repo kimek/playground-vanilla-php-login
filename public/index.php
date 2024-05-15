@@ -10,9 +10,9 @@
 <div class="user-form">
 	<?php
 	if (isset($_SESSION['user_id'])) {
-		include_once 'view/user-profile.php';
+		include_once  __DIR__ . '/../src/view/user-profile.php';
 	} else {
-		include_once 'view/user-access.php';
+		include_once  __DIR__ . '/../src/view/user-access.php';
 	}
 	?>
 </div>

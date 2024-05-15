@@ -10,7 +10,7 @@ function ajaxRequest(event) {
     event.preventDefault();
     document.body.classList.add('loading');
     let xhr = new XMLHttpRequest();
-    xhr.open('POST', 'action.php', true);
+    xhr.open('POST', 'api.php', true);
     xhr.onreadystatechange = function() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             document.body.classList.remove('loading');
