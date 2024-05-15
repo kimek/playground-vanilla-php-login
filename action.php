@@ -27,8 +27,13 @@ if ($_POST['action'] === 'register') {
 	$file = $_FILES['file'];
 
 	try {
-		$userSystem->register($username, $password, $file);
-		json_response('Registration successful!');
+		$result = $userSystem->register($username, $password, $file);
+		if($result) {
+			json_response('Registration successful!');
+		} else {
+			json_response('Registration failed, please try again');
+		}
+
 	} catch (RuntimeException $e) {
 		json_response('Registration failed! Please try again.', 500);
 		error_log('raytrace-id ' . $e->getMessage());

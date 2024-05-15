@@ -11,32 +11,39 @@ class UserSystem
 		$this->pdo = $pdo;
 	}
 
-	public function register($username, $password, $file): void
+	public function register($username, $password, $file): bool
 	{
 		$username = htmlspecialchars(strip_tags($username));
 		$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 		$stmt = $this->pdo->prepare("INSERT INTO users (username, password) VALUES (:username, :password)");
 
 		try {
-			$stmt->execute([
+			$result = $stmt->execute([
 				':username' => $username,
 				':password' => $hashedPassword
 			]);
 
-			$this->handleUserPhoto($file, $this->pdo->lastInsertId());
+			if($result) {
+				$photo = $this->handleUserPhoto($file, $this->pdo->lastInsertId());
+				if($photo) {
+					return true;
+				}
+				return false;
+			}
 
+			return false;
 		} catch (\Throwable $e) {
 			// error handling here
 		}
 	}
 
-	private function handleUserPhoto($file, $lastInsertedId): void
+	private function handleUserPhoto($file, $lastInsertedId): bool
 	{
 		$uploadDir = "uploads/";
 		$uploaded = $this->handleFileUpload($file, $uploadDir);
 		$stmt = $this->pdo->prepare("INSERT INTO files (file_path, file_name, user_id) VALUES (:file_path, :file_name, :user_id )");
 
-		$stmt->execute([
+		return $stmt->execute([
 			':file_path' => $uploaded['file_path'],
 			':file_name' => $uploaded['file_name'],
 			':user_id' => $lastInsertedId
