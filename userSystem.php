@@ -1,5 +1,6 @@
 <?php
 require_once 'includes/file_handling.php';
+require_once 'includes/json_helper.php';
 class UserSystem
 {
 	use fileHandler;
@@ -16,6 +17,11 @@ class UserSystem
 		$username = htmlspecialchars(strip_tags($username));
 		$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 		$stmt = $this->pdo->prepare("INSERT INTO users (username, password) VALUES (:username, :password)");
+
+		$errors = $this->userDataValidation($username, $password);
+		if($errors) {
+			json_response($errors,500);
+		}
 
 		try {
 			$result = $stmt->execute([
@@ -46,6 +52,20 @@ class UserSystem
 			':file_name' => $uploaded['file_name'],
 			':user_id' => $lastInsertedId
 		]);
+	}
+
+	private function userDataValidation($username, $password) : array {
+		$errors = [];
+
+		if (empty($username) || !preg_match('/^[a-zA-Z0-9]{3,20}$/', $username)) {
+			$errors[] = 'Username must be alphanumeric and 3-20 characters long.';
+		}
+
+		if (empty($password) || strlen($password) < 6) {
+			$errors[] = 'Password must be at least 6 characters long.';
+		}
+
+		return $errors;
 	}
 
 	public function login($username, $password): bool

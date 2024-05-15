@@ -12,7 +12,8 @@ if ($_POST['action'] === 'logout') {
 	json_response();
 }
 
-if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+if (!isset($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+	json_response('Refresh page and try again',500);
 	die('CSRF token validation failed');
 }
 
