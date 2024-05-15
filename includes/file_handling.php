@@ -24,11 +24,10 @@ trait fileHandler
 		}
 	}
 
-	private function generateUniqueFileName($directory, $fileName): string
+	private function generateUniqueFileName($fileName): string
 	{
 		$fileInfo = pathinfo($fileName);
-		$uniqueName = $fileInfo['filename'] . '_' . uniqid() . '.' . $fileInfo['extension'];
-		return $uniqueName;
+		return $fileInfo['filename'] . '_' . uniqid() . '.' . $fileInfo['extension'];
 	}
 
 	private function handleFileUpload($file, $uploadDir): array
@@ -36,26 +35,21 @@ trait fileHandler
 		$allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
 		$maxFileSize = 2 * 1024 * 1024; // 2 MB
 
-		// Check for file upload errors
 		if ($file['error'] !== UPLOAD_ERR_OK) {
 			throw new RuntimeException('File upload error: ' . $this->fileUploadErrorMessage($file['error']));
 		}
 
-		// Check file type
 		if (!in_array($file['type'], $allowedTypes)) {
 			throw new RuntimeException('Invalid file type. Allowed types are: ' . implode(', ', $allowedTypes));
 		}
 
-		// Check file size
 		if ($file['size'] > $maxFileSize) {
 			throw new RuntimeException('File size exceeds limit of 2 MB.');
 		}
 
-		// Generate a unique name for the file to avoid overwriting
-		$fileName = $this->generateUniqueFileName($uploadDir, $file['name']);
+		$fileName = $this->generateUniqueFileName($file['name']);
 		$targetFile = $uploadDir . $fileName;
 
-		// Move the uploaded file
 		if (!move_uploaded_file($file["tmp_name"], $targetFile)) {
 			throw new RuntimeException('Failed to move uploaded file.');
 		}

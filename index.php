@@ -4,7 +4,7 @@
 <head>
     <title>Test - Mateusz Kimont - Basic User Registration and Login</title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 <div class="user-form">
