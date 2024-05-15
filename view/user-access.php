@@ -32,8 +32,8 @@
 		<label for="register-password">Password:</label>
 		<input type="password" name="password" id="register-password" placeholder="Enter your password"
 			   required>
-		<label for="register-file">Upload File:</label>
-		<input type="file" name="file" id="register-file" required>
+		<label for="register-file">Upload File: (max 2 MB)</label>
+		<input type="file" name="file" accept="image/*" id="register-file" required>
 		<div class="tac">
 			<button type="submit" name="register">Register</button>
 		</div>
