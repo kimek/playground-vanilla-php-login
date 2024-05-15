@@ -21,7 +21,7 @@ A simple login system built with vanilla PHP, supporting user registration, logi
 2. **Set up the database**:
     - Create a new MySQL database, tables, user:
       ```sh
-      mysql -u your_username -p your_database_name < migration/migration.sql
+      mysql -u your_username -p < migration/migration.sql
       ```
 
 3. **Configure the application**:
@@ -56,17 +56,17 @@ A simple login system built with vanilla PHP, supporting user registration, logi
 
 ## Folder Structure
 
-- `index.php` - Main entry point for the application.
-- `api.php` - Vanilla api script.
+- `public/index.php` - Main entry point for the application.
+- `public/api.php` - Vanilla api script.
+- `public/assets/` - Contains stylesheets and JavaScript files.
+- `public/uploads/` - File upload folder.
 - `config/config.php` - Configuration file for database.
-- `assets/` - Contains stylesheets and JavaScript files.
 - `migration/migration.sql` - Contains the SQL schema for setting up the database.
 - `src/controllers/userSystem.php` - Login and registration handling script.
 - `src/inc/file_handling.php` - File upload handling script.
 - `src/inc/json_helper.php` - Json helper for api.
 - `src/inc/db_connection.php` - DB handling script.
 - `src/view/` - Basic page content.
-- `uploads/` - File upload folder.
 
 ## Contributing
 
