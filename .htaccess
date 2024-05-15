@@ -10,6 +10,12 @@
     Allow from all
 </Files>
 
+# Allow access to action.php
+<Files action.php>
+    Order Allow,Deny
+    Allow from all
+</Files>
+
 # Deny directory browsing
 Options -Indexes
 
