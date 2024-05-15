@@ -3,3 +3,8 @@
     Order deny,allow
     Deny from all
 </FilesMatch>
+
+<FilesMatch "\.(jpg|jpeg|png|gif)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
