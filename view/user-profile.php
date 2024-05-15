@@ -1,5 +1,4 @@
 <?php
-require_once 'includes/file_handling.php';
 require_once 'userSystem.php';
 require_once __DIR__ . '/../db_connection.php';
 $userSystem = new UserSystem($pdo);

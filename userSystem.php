@@ -1,5 +1,5 @@
 <?php
-
+require_once 'includes/file_handling.php';
 class UserSystem
 {
 	use fileHandler;
