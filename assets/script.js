@@ -8,11 +8,12 @@ if(typeof logoutForm !== 'undefined') {
 }
 function ajaxRequest(event) {
     event.preventDefault();
-
+    document.body.classList.add('loading');
     let xhr = new XMLHttpRequest();
     xhr.open('POST', 'action.php', true);
     xhr.onreadystatechange = function() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
+            document.body.classList.remove('loading');
             let response = JSON.parse(xhr.responseText).response;
             if (xhr.status === 200) {
                 if(response) {
