@@ -28,13 +28,11 @@ class UserSystem
 				if($photo) {
 					return true;
 				}
-				return false;
 			}
-
-			return false;
 		} catch (\Throwable $e) {
 			// error handling here
 		}
+		return false;
 	}
 
 	private function handleUserPhoto($file, $lastInsertedId): bool
