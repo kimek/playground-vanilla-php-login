@@ -33,16 +33,11 @@ switch ($action) {
 			json_response('All fields are required', 400);
 		}
 
-		try {
-			$result = $userSystem->register($username, $password, $file);
-			if (isset($result['error'])) {
-				json_response($result['error'], 500);
-			}
-			json_response($result['success']);
-		} catch (RuntimeException $e) {
-			error_log('Registration error: ' . $e->getMessage());
-			json_response('Registration failed! Please try again.', 500);
+		$result = $userSystem->register($username, $password, $file);
+		if (isset($result['error'])) {
+			json_response($result['error'], 500);
 		}
+		json_response($result['success']);
 		break;
 
 	case 'login':
