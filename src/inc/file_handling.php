@@ -32,15 +32,26 @@ trait fileHandler
 
 	private function handleFileUpload($file, $uploadDir): array
 	{
-		$allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+		$allowedTypes = [
+			'jpg' => 'image/jpeg',
+			'png' => 'image/png',
+			'gif' => 'image/gif'
+		];
 		$maxFileSize = 2 * 1024 * 1024; // 2 MB
 
 		if ($file['error'] !== UPLOAD_ERR_OK) {
 			throw new RuntimeException('File upload error: ' . $this->fileUploadErrorMessage($file['error']));
 		}
 
-		if (!in_array($file['type'], $allowedTypes)) {
-			throw new RuntimeException('Invalid file type. Allowed types are: ' . implode(', ', $allowedTypes));
+		$finfo = new finfo(FILEINFO_MIME_TYPE); // dont trust MIME types
+		if (false === $ext = array_search(
+				$finfo->file($file['tmp_name']),
+				$allowedTypes,
+				true
+			)) {
+			throw new RuntimeException('Invalid file format. Allowed types are: ' .
+				implode(', ', $allowedTypes)
+			);
 		}
 
 		if ($file['size'] > $maxFileSize) {
