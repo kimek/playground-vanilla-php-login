@@ -12,15 +12,14 @@ class UserSystem
 		$this->pdo = $pdo;
 	}
 
-	public function register($username, $password, $file): bool
+	public function register($username, $password, $file): array
 	{
 		$username = htmlspecialchars(strip_tags($username));
 		$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 		$stmt = $this->pdo->prepare("INSERT INTO users (username, password) VALUES (:username, :password)");
 
-		$errors = $this->userDataValidation($username, $password);
-		if($errors) {
-			json_response($errors,500);
+		if($errors = $this->userDataValidation($username, $password)) {
+			return [ 'error' => $errors ];
 		}
 
 		try {
@@ -31,27 +30,40 @@ class UserSystem
 
 			if($result) {
 				$photo = $this->handleUserPhoto($file, $this->pdo->lastInsertId());
+
 				if($photo) {
-					return true;
+					return ['success' => 'Registration successful!'];
 				}
+
+				return ['success' => 'You has been registration, however we had some issue with your photo'];
 			}
 		} catch (\Throwable $e) {
 			// error handling here
 		}
-		return false;
+
+		return [ 'error' => ['Registration failed, please try again'] ];
 	}
 
 	private function handleUserPhoto($file, $lastInsertedId): bool
 	{
 		$uploadDir = "uploads/";
-		$uploaded = $this->handleFileUpload($file, $uploadDir);
-		$stmt = $this->pdo->prepare("INSERT INTO files (file_path, file_name, user_id) VALUES (:file_path, :file_name, :user_id )");
 
-		return $stmt->execute([
-			':file_path' => $uploaded['file_path'],
-			':file_name' => $uploaded['file_name'],
-			':user_id' => $lastInsertedId
-		]);
+		try {
+			$uploaded = $this->handleFileUpload($file, $uploadDir);
+			$stmt = $this->pdo->prepare("INSERT INTO files (file_path, file_name, user_id) VALUES (:file_path, :file_name, :user_id )");
+
+			return $stmt->execute([
+				':file_path' => $uploaded['file_path'],
+				':file_name' => $uploaded['file_name'],
+				':user_id' => $lastInsertedId
+			]);
+		} catch (\RuntimeException $e) {
+
+		} catch (\Exception $e) {
+			// implement custom json error class to handle human info errors
+		}
+		return false;
+
 	}
 
 	private function userDataValidation($username, $password) : array {

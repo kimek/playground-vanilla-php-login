@@ -37,7 +37,7 @@ trait fileHandler
 			'png' => 'image/png',
 			'gif' => 'image/gif'
 		];
-		$maxFileSize = 2 * 1024 * 1024; // 2 MB
+		$maxFileSize = 1 * 1024 * 1024; // 1 MB
 
 		// Undefined | Multiple Files | $_FILES Corruption Attack
 		// If this request falls under any of them, treat it invalid.
@@ -58,13 +58,13 @@ trait fileHandler
 				$allowedTypes,
 				true
 			)) {
-			throw new RuntimeException('Invalid file format. Allowed types are: ' .
+			throw new Exception('Invalid file format. Allowed types are: ' .
 				implode(', ', $allowedTypes)
 			);
 		}
 
 		if ($file['size'] > $maxFileSize) {
-			throw new RuntimeException('File size exceeds limit of 2 MB.');
+			throw new Exception('File size exceeds limit of 1 MB.');
 		}
 
 		$fileName = $this->generateUniqueFileName($file['name']);
