@@ -96,7 +96,8 @@ class UserSystem
 
 			if ($user && password_verify($password, $user['password'])) {
 				$_SESSION['user_id'] = $user['id'];
-				$_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+				// $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); // TODO secure from fixation attack
+				// prototype create new cookie with XSS token and use it with csrf
 				return true;
 			}
 		} catch (\Throwable $e) {
