@@ -39,6 +39,15 @@ trait fileHandler
 		];
 		$maxFileSize = 2 * 1024 * 1024; // 2 MB
 
+		// Undefined | Multiple Files | $_FILES Corruption Attack
+		// If this request falls under any of them, treat it invalid.
+		if (
+			!isset($file['error']) ||
+			is_array($file['error'])
+		) {
+			throw new RuntimeException('File upload invalid parameters.');
+		}
+
 		if ($file['error'] !== UPLOAD_ERR_OK) {
 			throw new RuntimeException('File upload error: ' . $this->fileUploadErrorMessage($file['error']));
 		}
