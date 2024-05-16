@@ -111,6 +111,7 @@ body {
     margin: 0 auto;
     width: 500px;
     position: relative;
+    height: 100vh;
 }
 
 .user-registration, .user-login {
@@ -118,7 +119,8 @@ body {
     box-shadow: 0 2px 5px rgba(105, 108, 109, 0.7), 0 0 8px 5px rgba(208, 223, 226, 0.4) inset;
     border-radius: 5px;
     position: absolute;
-    top: 0;
+    top: 50%;
+    transform: translateY(-50%);
     width: 88%;
     padding: 18px 6% 100px 6%;
     margin: 0 0 35px 0;
@@ -194,23 +196,23 @@ p.change_link a {
 @keyframes fadeOutLeft {
     0% {
         opacity: 1;
-        transform: translateX(0);
+        transform: translateY(-50%) translateX(0);
     }
     100% {
         opacity: 0;
-        transform: translateX(-20px);
+        transform: translateY(-50%) translateX(-20px);
     }
 }
 
 @keyframes fadeInLeft {
     0% {
         opacity: 0;
-        transform: translateX(-20px);
+        transform: translateY(-50%) translateX(-20px);
     }
 
     100% {
         opacity: 1;
-        transform: translateX(0);
+        transform: translateY(-50%) translateX(0);
     }
 }
 
