@@ -1,52 +1,66 @@
 <?php
 session_start();
-require_once  __DIR__ . '/../src/inc/json_helper.php';
+require_once __DIR__ . '/../src/inc/json_helper.php';
+require_once __DIR__ . '/../src/inc/csrf_helper.php';
+require_once __DIR__ . '/../src/inc/db_connection.php';
+require_once __DIR__ . '/../src/controllers/userSystem.php';
 
-if(empty($_POST)) {
-	json_response(null,500);
+if (empty($_POST)) {
+	json_response('No data received', 400);
 }
 
-if ($_POST['action'] === 'logout') {
-	$_SESSION = array();
-	session_destroy();
-	json_response();
-}
+$action = $_POST['action'] ?? '';
 
-if (!isset($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
-	json_response('Your token has been expired. Please refresh page and try again',500);
-	die('CSRF token validation failed');
+if ($action !== 'logout') {
+	validate_csrf_token();
 }
-
-require_once  __DIR__ . '/../src/inc/db_connection.php';
-require_once  __DIR__ . '/../src/controllers/userSystem.php';
 
 $userSystem = new UserSystem($pdo);
 
-if ($_POST['action'] === 'register') {
-	$username = $_POST['username'];
-	$password = $_POST['password'];
-	$file = $_FILES['file'];
+switch ($action) {
+	case 'logout':
+		$_SESSION = array();
+		session_destroy();
+		json_response('Logged out successfully');
+		break;
 
-	try {
-		$result = $userSystem->register($username, $password, $file);
-		if(isset($result['error'])) {
-			json_response($result['error'],500);
+	case 'register':
+		$username = trim($_POST['username']);
+		$password = $_POST['password'];
+		$file = $_FILES['file'];
+
+		if (empty($username) || empty($password) || empty($file)) {
+			json_response('All fields are required', 400);
 		}
-		json_response($result['success']);
-	} catch (RuntimeException $e) {
-		json_response('Registration failed! Please try again.', 500);
-		error_log('raytrace-id ' . $e->getMessage());
-	}
-}
 
-if ($_POST['action'] === 'login') {
-	$username = $_POST['username'];
-	$password = $_POST['password'];
-	if ($userSystem->login($username, $password)) {
-		json_response();
-	} else {
-		json_response('Invalid credentials!',500);
-	}
-}
+		try {
+			$result = $userSystem->register($username, $password, $file);
+			if (isset($result['error'])) {
+				json_response($result['error'], 500);
+			}
+			json_response($result['success']);
+		} catch (RuntimeException $e) {
+			error_log('Registration error: ' . $e->getMessage());
+			json_response('Registration failed! Please try again.', 500);
+		}
+		break;
 
-json_response('',500);
+	case 'login':
+		$username = trim($_POST['username']);
+		$password = $_POST['password'];
+
+		if (empty($username) || empty($password)) {
+			json_response('Username and password are required', 400);
+		}
+
+		if ($userSystem->login($username, $password)) {
+			json_response('Login successful');
+		} else {
+			json_response('Invalid credentials!', 401);
+		}
+		break;
+
+	default:
+		json_response('Invalid action', 400);
+		break;
+}

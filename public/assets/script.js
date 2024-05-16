@@ -18,6 +18,7 @@ function ajaxRequest(event) {
             if (xhr.status === 200) {
                 if(response) {
                     alert(response);
+                    document.location = location.protocol+'//'+location.host+location.pathname;
                 } else {
                     document.location = location.protocol+'//'+location.host+location.pathname;
                 }

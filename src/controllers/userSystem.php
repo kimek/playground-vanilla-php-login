@@ -82,7 +82,7 @@ class UserSystem
 
 	public function login($username, $password): bool
 	{
-		$username = trim(htmlspecialchars(strip_tags($username)));
+		$username = htmlspecialchars(strip_tags($username));
 		// $password = trim($password); // if spaces are excluded in password req. as its common client issue
 		// no need to add here https://www.php.net/manual/en/filter.filters.sanitize.php
 		$stmt = $this->pdo->prepare("SELECT * FROM users WHERE username = :username");
