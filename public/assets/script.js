@@ -28,3 +28,9 @@ function ajaxRequest(event) {
     };
     xhr.send(new FormData(event.target));
 }
+
+document.querySelector(".user-photo").onclick = changeUserPhoto;
+
+function changeUserPhoto() {
+    alert('To implement');
+}

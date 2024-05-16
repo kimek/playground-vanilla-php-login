@@ -2,6 +2,27 @@ body {
     color: #1d3c41;
     font-family: sans-serif;
     background: #f7f7f7;
+    margin: 0;
+}
+
+.dashboard {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: 100vh;
+}
+
+.dashboard-sidebar {
+    background: #e1c7c7;
+    flex: 3;
+    max-width: 370px;
+    border-right: 1px solid #a37878;
+    box-shadow: 1px 0 4px #d1b8b8;
+}
+
+.dashboard-main {
+    flex: 7;
+    padding: 2em;
 }
 
 .user-login, .user-registration {
@@ -12,20 +33,62 @@ body {
 
 .user-profile {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     align-items: center;
+    padding: 1em;
 }
 
 .user-welcome {
-    flex:8;
+    font-weight: bold;
+    text-align: center;
 }
 
 .user-photo {
-    flex:1;
-}
-.user-photo img {
+    margin: 0 0 1em;
+    border-radius: 50%;
+    border: 3px solid #9b9b9b;
+    box-shadow: inset 0 0 7px 2px #cfcaca;
+    max-height: 90px;
+    max-width: 90px;
     width: 100%;
+    height: 30vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    overflow: hidden;
+}
+
+.user-photo:after {
+    content: '';
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.user-photo:hover:after {
+    cursor:pointer;
+    content: 'Change photo';
+    background: #ebebeb;
+    position: absolute;
+    opacity: 0.8;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    font-weight: bold;
+}
+
+#logoutForm button {
+    border: 0;
+    background: none;
+}
+
+#logoutForm button:hover {
+    cursor: pointer;
 }
 
 .hiddenanchor {
@@ -155,7 +218,7 @@ p.change_link a {
     animation-name: fadeOutLeft;
 }
 
-button {
+.user-form button {
     margin: 1em 0 10px;
     width: 30%;
     cursor: pointer;
