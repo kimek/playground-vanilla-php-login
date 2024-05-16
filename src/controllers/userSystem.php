@@ -152,4 +152,9 @@ class UserSystem
 
 		return '';
 	}
+
+	public function logout(): void {
+		$_SESSION = array();
+		session_destroy();
+	}
 }

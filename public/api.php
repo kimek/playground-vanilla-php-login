@@ -19,8 +19,7 @@ $userSystem = new UserSystem($pdo);
 
 switch ($action) {
 	case 'logout':
-		$_SESSION = array();
-		session_destroy();
+		$userSystem->logout();
 		json_response('Logged out successfully');
 		break;
 
