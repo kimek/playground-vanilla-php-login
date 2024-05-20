@@ -35,7 +35,8 @@ class UserSystem
 					return ['success' => 'Registration successful!'];
 				}
 
-				return ['success' => 'You has been registration, however we had some issue with your photo'];
+				// Keep user registered instead of losing it - progressive failure handling
+				return ['success' => 'Registration completed successfully, but there was an issue with your photo upload.'];
 			}
 		} catch (\Throwable $e) {
 			// error handling here
@@ -101,7 +102,7 @@ class UserSystem
 				return true;
 			}
 		} catch (\Throwable $e) {
-			// error handling
+			// Error handling
 		}
 
 		return false;
@@ -110,21 +111,16 @@ class UserSystem
 	private function getUser(): array
 	{
 		$stmt = $this->pdo->prepare("SELECT username FROM users WHERE id = :username LIMIT 1");
-		$stmt->execute([
-			':username' => $_SESSION['user_id']
-		]);
 
 		try {
+			$stmt->execute([':username' => $_SESSION['user_id']]);
 			$user = $stmt->fetch();
-		} catch (\Throwable $e) {
-			// error handling, example:
-			echo 'We sorry, we have currently doing maintanance jobs on our side. Please try again later.';
-			error_log('raytrace-id ' . $e->getMessage());
-			// redirect header("Location: http://example.com/tryagain.php");
-			die();
-		}
 
-		return $user;
+			return $user ?: [];
+		} catch (\Throwable $e) {
+			return [];
+			// Error handling ex. add ray trace,
+		}
 	}
 
 	public function getUserProfile(): array
@@ -138,17 +134,17 @@ class UserSystem
 	private function getUserPhoto(): string
 	{
 		$stmt = $this->pdo->prepare("SELECT * FROM files WHERE user_id = :user_id LIMIT 1");
-		$stmt->execute([
-			':user_id' => $_SESSION['user_id']
-		]);
 
 		try {
+			$stmt->execute([
+				':user_id' => $_SESSION['user_id']
+			]);
 			$file = $stmt->fetch();
 			if ($file) {
 				return $file['file_path'] . '/' . $file['file_name'];
 			}
 		} catch (\Throwable $e) {
-			// error handling
+			// Error handling
 		}
 
 		return '';
