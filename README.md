@@ -1,6 +1,8 @@
 # Vanilla PHP Login System
 
-A simple login system built with vanilla PHP, supporting user registration, login, and file uploads.
+A test login system built in 4 hours with vanilla PHP, featuring user registration, login, and file uploads. 
+
+Note: This code is a demonstration of my skills and is not perfect.
 
 ## Requirements
 
